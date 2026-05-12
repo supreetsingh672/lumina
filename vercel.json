@@ -4,5 +4,15 @@
   "outputDirectory": ".next",
   "env": {
     "NEXT_PUBLIC_API_URL": "https://lumina-0d1t.onrender.com"
+  },
+  "experimentalServices": {
+    "frontend": {
+      "routePrefix": "/",
+      "framework": "nextjs"
+    },
+    "backend": {
+      "entrypoint": "backend",
+      "routePrefix": "/_/backend"
+    }
   }
 }

@@ -1,6 +1,22 @@
+import os
 import re
 import httpx
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
+
+
+def _build_api() -> YouTubeTranscriptApi:
+    """Build YouTubeTranscriptApi, using Webshare proxy when env vars are set."""
+    username = os.environ.get("WEBSHARE_PROXY_USERNAME")
+    password = os.environ.get("WEBSHARE_PROXY_PASSWORD")
+    if username and password:
+        return YouTubeTranscriptApi(
+            proxies=WebshareProxyConfig(
+                proxy_username=username,
+                proxy_password=password,
+            )
+        )
+    return YouTubeTranscriptApi()
 
 
 def extract_video_id(url: str) -> str:
@@ -47,7 +63,7 @@ async def get_video_meta(video_id: str) -> dict:
 
 def get_transcript(video_id: str) -> list:
     """Returns list of dicts with keys: text, start, duration."""
-    api = YouTubeTranscriptApi()
+    api = _build_api()
     fetched = api.fetch(video_id)
     return [{"text": s.text, "start": s.start, "duration": s.duration} for s in fetched]
 
