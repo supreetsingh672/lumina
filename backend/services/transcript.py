@@ -11,7 +11,7 @@ def _build_api() -> YouTubeTranscriptApi:
     password = os.environ.get("WEBSHARE_PROXY_PASSWORD")
     if username and password:
         return YouTubeTranscriptApi(
-            proxies=WebshareProxyConfig(
+            proxy_config=WebshareProxyConfig(
                 proxy_username=username,
                 proxy_password=password,
             )
